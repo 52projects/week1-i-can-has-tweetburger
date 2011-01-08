@@ -4,4 +4,4 @@
 # If you change this key, all old signed cookies will become invalid!
 # Make sure the secret is at least 30 characters and all random,
 # no regular words or you'll be exposed to dictionary attacks.
-Icanhastweetburger::Application.config.secret_token = '19a5a0e733f5991f5d54c559686f4e6cc98b33cc55c0c35a288f98d4a192fa159674f3947f6ab67e85af437486501eecb8f2e53ccd2f4d06f5fc555b88fa4404'
+Icanhastweetburger::Application.config.secret_token = '880c4ac6aea24c5aa6125ccb199d0a976c77db9b08a8f550bcf977be4c11866be248f6211a36f0e39fb52897ee4860a3176c615d3da8ba72a6a9db794d4039c8'
