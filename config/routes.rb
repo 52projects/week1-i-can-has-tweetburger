@@ -13,7 +13,7 @@ Icanhastweetburger::Application.routes.draw do
   match '/signout' => 'members#signout'
 
 
-  root :to => "members#show"
+  root :to => "members#index"
   
   #match ':controller(/:action(/:id(.:format)))'
 

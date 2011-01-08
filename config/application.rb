@@ -8,6 +8,16 @@ Bundler.require(:default, Rails.env) if defined?(Bundler)
 
 module Icanhastweetburger
   class Application < Rails::Application
+    
+    # Twitter OAuth settings
+    TWOAUTH_SITE = 'http://twitter.com'
+    # Twitter OAuth callback default
+    TWOAUTH_CALLBACK = 'http://icanhastweetburger.heroku.com/members/callback' #ENV['TWOAUTH_CALLBACK']
+    # Twitter OAuth Consumer key
+    TWOAUTH_KEY = ENV['TWOAUTH_KEY']
+    # Twitter OAuth Consumer secret
+    TWOAUTH_SECRET = ENV['TWOAUTH_SECRET']
+    
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
