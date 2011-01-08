@@ -1,0 +1,149 @@
+#!/usr/bin/env ruby
+
+# == Synopsis
+#
+# Translate text into LOLspeak
+#
+# == Usage
+#
+#   lolspeak [OPTIONS] [<text> ...]
+#
+# == Options
+#  
+# -f, --file FILE:: Read input from a file.  Use <tt>-</tt> for standard
+#                   input.
+#
+# -x, --xml:: Parse input text as XML and translate only the text portions.
+#
+# -h, --help:: Prints a help message and exits.
+#
+# -v, --version:: Prints the version and exits.
+#
+# == Author
+# Dave Dribin
+#
+# == Copyright
+# Copyright (c)  2008 Dave Dribin
+# Licensed under the MIT license.
+
+# This makes STDIN and STDOUT both act as containing UTF-8.
+$KCODE = 'u'
+
+require 'lolspeak'
+require 'optparse'
+require 'ostruct'
+require 'set'
+
+class LOLspeakApp
+  COMMAND = File.basename($0)
+  USAGE = "Usage: #{COMMAND} [OPTIONS] [<text> ...]"
+  def initialize
+    @command = File.basename($0)
+
+    @options = OpenStruct.new
+    @options.inputFile = nil
+    @options.xml = false
+    @options.try_heuristics = false
+    @options.heuristics_exclude = Set.new
+  end
+  
+  def run(argv)
+    begin
+      if parse_options(argv)
+        main(argv)
+      end
+    rescue
+      STDERR.puts "#{COMMAND}: " + $!
+      return 1
+    end
+    return 0
+  end
+  
+  def parse_options(argv)
+    opts = OptionParser.new do |opts|
+      opts.banner = USAGE
+      opts.separator ""
+      opts.separator "Specific options:"
+
+      opts.on("-f", "--file FILE", "Read input from a file") do |fileName|
+        @options.inputFile = fileName
+      end
+      
+      opts.on("-x", "--xml", "Parse text as XML") do |fileName|
+        @options.xml = true
+      end
+
+      opts.on("-H", "--heuristics", "Enable heuristics") do
+        @options.try_heuristics = true
+      end
+
+      opts.on("-X", "--heuristics-exclude FILE",
+        "List of words excluded from heuristics") do |path|
+        @options.try_heuristics = true
+        excludes = @options.heuristics_exclude
+        File.open(path) do |f|
+          f.each { |word| excludes.add(word.chomp) }
+        end
+      end
+      
+      opts.on_tail("-h", "--help", "Show a help message") do
+        puts opts
+        return false
+      end
+
+      opts.on_tail("-v", "--version", "Show version") do
+        puts "#{COMMAND} #{LOLspeak::VERSION}"
+        return false
+      end
+    end
+    
+    opts.parse!(argv)
+    return true
+  end
+  
+  def main(argv)
+    if @options.try_heuristics
+      LOLspeak.default_tranzlator.trace = true
+      LOLspeak.default_tranzlator.try_heuristics = true
+      LOLspeak.default_tranzlator.heuristics_exclude = @options.heuristics_exclude
+    end
+
+    if argv.length == 0 and @options.inputFile.nil?
+      @options.inputFile = "-"
+    end
+    
+    if @options.inputFile.nil?
+      argv.collect! { |a| a.to_lolspeak }
+      puts argv.join(" ")
+      return
+    end
+    
+    if (@options.inputFile == "-")
+      io = STDIN
+    else
+      io = File.open(@options.inputFile)
+    end
+    
+    if (@options.xml)
+      translate_xml_io(io)
+    else
+      translate_io(io)
+    end
+  end
+  
+  def translate_io(io)
+    begin
+      io.each { |l| puts l.to_lolspeak }
+    rescue Interrupt
+    end
+  end
+  
+  def translate_xml_io(io)
+    xml = io.read
+    puts xml.xml_to_lolspeak
+  end
+end
+
+app = LOLspeakApp.new
+rc = app.run(ARGV)
+exit rc

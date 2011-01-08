@@ -1,0 +1,1 @@
+require 'lolspeak/lib/lolspeak'
