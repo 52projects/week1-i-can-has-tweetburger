@@ -132,6 +132,8 @@ module LOLspeak
         lol_word += space if lol_word != ""
         lol_word
       end
+      lol_words.gsub!("thank u", "kthx")
+      lol_words.gsub!("kthx kthxbye", "kthxbye")
       return lol_words
     end
   
