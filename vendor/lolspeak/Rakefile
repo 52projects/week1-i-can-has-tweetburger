@@ -1,0 +1,78 @@
+require 'rubygems'
+require 'rake'
+require 'rake/testtask'
+require 'rake/rdoctask'
+require 'rake/gempackagetask'
+
+$LOAD_PATH.unshift 'lib'
+require 'lolspeak/version'
+
+$KCODE = "UTF-8"
+
+task :default => [:test_units]
+
+desc "Run basic tests"
+Rake::TestTask.new("test_units") do |t|
+  t.pattern = 'test/*_test.rb'
+  t.verbose = false
+  t.warning = true
+end
+
+PKG_NAME = 'lolspeak'
+PKG_VERSION = LOLspeak::VERSION
+PKG_FILES = FileList[
+  '[A-Z]*', 
+  'bin/**/*',
+  'lib/**/*.rb',
+  # Add this manually, because it's copied. If it doesn't exist at the time
+  # this is run, the wildcard won't pick it up, and it won't be included
+  # in the final package.
+  'lib/lolspeak/tranzlator.yml',
+  'test/**/*',
+]
+
+Rake::RDocTask.new(:rdoc) do |rdoc|
+  rdoc.rdoc_dir = 'rdoc'
+  rdoc.title    = "#{PKG_NAME} -- A LOLspeak translator"
+  rdoc.rdoc_files.include('README')
+  rdoc.rdoc_files.include('lib/**/*.rb', 'bin/*')
+end
+
+spec = Gem::Specification.new do |s|
+  s.platform = Gem::Platform::RUBY
+  s.summary = "LOLspeak translator"
+  s.name = PKG_NAME
+  s.version = PKG_VERSION
+  s.requirements << 'none'
+  s.require_path = 'lib'
+  s.files = PKG_FILES
+  s.has_rdoc = true
+  s.bindir = 'bin'
+  s.executables = ['lolspeak']
+  s.description = <<-EOF
+  Translates English text into LOLspeak.
+  EOF
+  
+  s.author = "Dave Dribin"
+  s.homepage = "http://www.dribin.org/dave/software/lolspeak/"
+  s.rubyforge_project = 'lolspeak'
+end
+
+Rake::GemPackageTask.new(spec) do |pkg|
+  pkg.need_zip = true
+  pkg.need_tar = true
+end
+
+
+SRC_TRANZ = "../tranzlator.yml"
+DEST_TRANZ = "lib/lolspeak/tranzlator.yml"
+
+if File.exists? SRC_TRANZ
+  file DEST_TRANZ => [SRC_TRANZ] do
+    safe_ln(SRC_TRANZ, DEST_TRANZ)
+  end
+  task :tranzlator => DEST_TRANZ
+  task :test_units => [:tranzlator]
+  task :package => [:tranzlator]
+end
+
