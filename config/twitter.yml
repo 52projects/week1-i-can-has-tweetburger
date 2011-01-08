@@ -1,6 +1,6 @@
 development:
-  consumer_token: 
-  consumer_secret: 
+  consumer_token: "BmJSrMVJOX4fRdddKxbuug"
+  consumer_secret: "zu1EP6RICEKWcygg0QSVbcnVlaXbZQeyLpdRDjpxHU"
   logout_url: 
 production:
   consumer_token: 

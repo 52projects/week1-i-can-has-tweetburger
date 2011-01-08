@@ -1,4 +1,22 @@
 Icanhastweetburger::Application.routes.draw do
+  
+	resources :members,
+		:collection => { :callback => :get },
+		:member => { 
+			:update_status => :post, 
+			:partialfriends => :get, 
+			:partialfollowers => :get, 
+			:partialmentions => :get , 
+			:partialdms => :get    
+		}
+
+  match '/signout' => 'members#signout'
+
+
+  root :to => "members#show"
+  
+  #match ':controller(/:action(/:id(.:format)))'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
