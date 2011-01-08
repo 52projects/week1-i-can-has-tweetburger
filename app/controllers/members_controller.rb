@@ -1,3 +1,4 @@
+require 'oauth_system'
 class MembersController < ApplicationController
   
   include OauthSystem
