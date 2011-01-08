@@ -1,8 +1,12 @@
+<div class="prefix_3 grid_10 suffix_3">
 <%= form_tag tweet_path do %>
-	<fieldset id="" class="">
+	<fieldset class="border_1 pad">
 		<legend>Convert to lolspeak</legend>
-		<div><%= label_tag 'tweet' %></div>
-		<div><%= text_area_tag 'tweet' %></div>
-		<div><%= submit_tag %></div>
-	</fieldset>
+		<p>
+			<%= label_tag 'tweet' %>
+			<%= text_area_tag 'tweet', nil, {:rows => 4, :class => "large_text"} %>
+		</p>
+		<p><%= submit_tag %></p>
+	</fieldset>	
 <% end %>
+</div>

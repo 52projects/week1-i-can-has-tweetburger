@@ -1,0 +1,29 @@
+.large_text {
+	font-size: 24px;
+}
+
+#tweet {
+	width: 100%;
+}
+
+fieldset {
+	border: 1px solid #000;
+	width: 100%;
+	padding: 20px;
+}
+
+.border_1 {
+	border: 1px solid #999;
+}
+
+.border_black {
+	border-color: #000;
+}
+
+.pad {
+	padding: 5px;
+}
+
+fieldset legend {
+	font-size: 30px;
+}
