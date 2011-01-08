@@ -1,0 +1,8 @@
+development:
+  consumer_token: 
+  consumer_secret: 
+  logout_url: 
+production:
+  consumer_token: 
+  consumer_secret: 
+  logout_url:
