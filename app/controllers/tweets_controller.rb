@@ -1,7 +1,11 @@
 require 'lolspeak'
+require 'hpricot'
 
 class TweetsController < ApplicationController
   def show
+    response = Net::HTTP.get_response(URI.parse("http://api.cheezburger.com/xml/category/cats/lol/random"))
+    doc = Hpricot::XML(response.body)
+    @catimage = (doc/:PictureImageUrl).innerHTML
     
     render :new
   end
@@ -10,13 +14,6 @@ class TweetsController < ApplicationController
   end
   
   def create
-    #http://api.cheezburger.com/xml/category/cats/lol/random
-    uri = URI.parse("http://api.cheezburger.com/xml/category/cats/lol/random")
-    response = Net::HTTP.get_response(uri)
-    
-    @catimage = response.body
-    
-    
     @loltweet = params[:tweet].to_lolspeak
     
   end
