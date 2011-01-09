@@ -1,15 +1,15 @@
 <div class="prefix_3 grid_10 suffix_3">
 <%= form_tag tweet_path do %>
 	<fieldset class="border_1 pad">
-		<legend>Convert to lolspeak</legend>
+		<legend>Build your tweet-burger</legend>
 		<p>
 			<%= image_tag(@catimage) %>		
 		</p>
 		<p>
-			<%= label_tag 'tweet' %>
+			<%= label_tag 'an teh kitty sez' %>
 			<%= text_area_tag 'tweet', nil, {:rows => 4, :class => "large_text"} %>
 		</p>
-		<p><%= submit_tag %></p>
+		<p><%= submit_tag "build it" %></p>
 	</fieldset>	
 <% end %>
 </div>
