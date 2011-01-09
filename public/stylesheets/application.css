@@ -6,6 +6,10 @@
 	width: 100%;
 }
 
+p.cat_image_center {
+	text-align: center
+}
+
 fieldset {
 	border: 1px solid #000;
 	width: 100%;

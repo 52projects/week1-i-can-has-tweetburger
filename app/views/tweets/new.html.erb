@@ -2,8 +2,9 @@
 <%= form_tag tweet_path do %>
 	<fieldset class="border_1 pad">
 		<legend>Build your tweet-burger</legend>
-		<p>
-			<%= image_tag(@catimage) %>		
+		<p class="cat_image_center">
+			<%= image_tag(@catimage) %>	
+			<%=hidden_field_tag 'original_image_url', @catimage %>	
 		</p>
 		<p>
 			<%= label_tag 'an teh kitty sez' %>
