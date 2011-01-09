@@ -1,20 +1,8 @@
 Icanhastweetburger::Application.routes.draw do
-  
-	resources :members,
-		:collection => { :callback => :get },
-		:member => { 
-			:update_status => :post, 
-			:partialfriends => :get, 
-			:partialfollowers => :get, 
-			:partialmentions => :get , 
-			:partialdms => :get    
-		}
-
-  match '/signout' => 'members#signout'
 
   resource :tweet
 
-  root :to => "members#show"
+  root :to => "tweets#show"
   
   #match ':controller(/:action(/:id(.:format)))'
 
