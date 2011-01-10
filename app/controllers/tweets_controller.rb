@@ -13,7 +13,7 @@ class TweetsController < ApplicationController
     
   end
   
-  def create
+  def preview
     
     #still needs to check the image size and set x,y based on that
     #still needs to check caption length and break it up to fit on the image
@@ -58,6 +58,9 @@ class TweetsController < ApplicationController
      #  end
     
     @previewimage = "http://cheezburger.com/caption/previewcaption.ashx?" + CGI.escape(xml)
+  end
+  
+  def create
     
   end
 end

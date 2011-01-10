@@ -5,7 +5,9 @@ Icanhastweetburger::Application.routes.draw do
   get "/callback" => 'user_session#callback'
 
   resource :tweet
-
+  
+  post '/tweets/preview' => 'tweets#preview'
+  
   root :to => "tweets#show"
   
   #match ':controller(/:action(/:id(.:format)))'
