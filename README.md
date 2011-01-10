@@ -31,6 +31,7 @@ Libs
 * Ruby gem [twitter_oauth (0.1.3)](http://rubygems.org/gems/twitter_oauth)
 * Ruby gem [lolspeak (1.0.0) (for translation)](http://rubygems.org/gems/lolspeak)
 * Ruby gem [cheezburger (1.0.2) (for RSpec tests, optional)](http://rubygems.org/gems/cheezburger)
+* Ruby gem [hpricot](https://github.com/hpricot/hpricot)
 
 Possible output
 -------------------------
