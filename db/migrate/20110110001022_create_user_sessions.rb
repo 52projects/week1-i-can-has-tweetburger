@@ -7,6 +7,8 @@ class CreateUserSessions < ActiveRecord::Migration
 
       t.timestamps
     end
+    
+    add_index(:user_sessions, :identifier)
   end
 
   def self.down
