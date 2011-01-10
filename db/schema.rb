@@ -13,6 +13,7 @@
 ActiveRecord::Schema.define(:version => 20110110001022) do
 
   create_table "user_sessions", :force => true do |t|
+    t.string   "identifier"
     t.string   "access_token"
     t.string   "access_secret"
     t.datetime "created_at"
