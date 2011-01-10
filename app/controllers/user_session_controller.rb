@@ -1,10 +1,16 @@
 class UserSessionController < ApplicationController
+  skip_before_filter :check_auth
+  
   def login
     req_token = twitter_client.request_token(:oauth_callback => 'http://icanhastweetburger.heroku.com/callback')
     session[:twitter_request_token] = req_token.token
     session[:twitter_request_secret] = req_token.secret
 
     redirect_to req_token.authorize_url
+  end
+  
+  def logoff
+    reset_session
   end
 
   def callback
