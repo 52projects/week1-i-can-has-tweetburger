@@ -84,6 +84,8 @@ class TweetsController < ApplicationController
     twitter_text = "#{@loltweet} : #{bitlyImage} #tweetburger"
     twitter_client.update(twitter_text)
     
+    redirect_to tweet_path
+    
   end
 
   private
