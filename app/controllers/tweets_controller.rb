@@ -26,9 +26,9 @@ class TweetsController < ApplicationController
     @imageurl = params[:original_image_url] # this should be set to the url resulting from pushing content to cb api
 
     # if we want to use bitly
-    # uri = URI.parse("http://api.bit.ly/v3/shorten?login=&apikey=&longUrl=#{params[:original_image_url]}%2F&format=txt")
-    #    response = Net::HTTP.get_response(uri)
-    #    @imageurl = response.body.strip
+    uri = URI.parse("http://api.bit.ly/v3/shorten?login=#{APP_CONFIG["bitly_username"]}&apikey=#{APP_CONFIG["bitly_token"]}&longUrl=#{params[:original_image_url]}%2F&format=txt")
+    response = Net::HTTP.get_response(uri)
+    @imageurl = response.body.strip
     
     xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?><CaptionData><OriginalImageUrl>#{params[:original_image_url]}</OriginalImageUrl><Captions><Caption><Text>#{parse_tweet_text(@loltweet)}</Text><FontFamily>Impact</FontFamily><FontSize>40</FontSize><FontColor>white</FontColor><XPosition>80</XPosition><YPosition>50</YPosition><IsBold>false</IsBold><TextStyle>outline</TextStyle><IsItalic>false</IsItalic><IsStrikeThrough>false</IsStrikeThrough><IsUnderLine>false</IsUnderLine><Opacity>100</Opacity></Caption></Captions></CaptionData>"
 
