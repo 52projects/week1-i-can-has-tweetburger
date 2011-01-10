@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  CONSUMER_KEY = 'eFv13CgYgUamtEqjViixQ'
-  CONSUMER_SECRET = 'MSu32M0rSFP2WgHDlRf2d4q8Wr9AKg1uHYs8UGOHA'
+  CONSUMER_KEY = APP_CONFIG['twitter_consumer_key']
+  CONSUMER_SECRET = APP_CONFIG['twitter_consumer_secret']
   attr_writer :twitter_client
   
   def twitter_client
