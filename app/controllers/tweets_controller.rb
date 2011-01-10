@@ -6,6 +6,7 @@ class TweetsController < ApplicationController
     response = Net::HTTP.get_response(URI.parse("http://api.cheezburger.com/xml/category/cats/lol/random"))
     doc = Hpricot::XML(response.body)
     @catimage = (doc/:PictureImageUrl).innerHTML
+    @pictureId = (doc/:PictureId).innerHTML
     
     render :new
   end
@@ -24,11 +25,7 @@ class TweetsController < ApplicationController
     
     @loltweet = params[:tweet].to_lolspeak
     @imageurl = params[:original_image_url] # this should be set to the url resulting from pushing content to cb api
-
-    # if we want to use bitly
-    uri = URI.parse("http://api.bit.ly/v3/shorten?login=#{APP_CONFIG["bitly_username"]}&apikey=#{APP_CONFIG["bitly_token"]}&longUrl=#{params[:original_image_url]}%2F&format=txt")
-    response = Net::HTTP.get_response(uri)
-    @imageurl = response.body.strip
+    @pictureId = params[:picture_id] # this is the picture ID to send to cheeseburger
     
     xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?><CaptionData><OriginalImageUrl>#{params[:original_image_url]}</OriginalImageUrl><Captions><Caption><Text>#{parse_tweet_text(@loltweet)}</Text><FontFamily>Impact</FontFamily><FontSize>40</FontSize><FontColor>white</FontColor><XPosition>80</XPosition><YPosition>50</YPosition><IsBold>false</IsBold><TextStyle>outline</TextStyle><IsItalic>false</IsItalic><IsStrikeThrough>false</IsStrikeThrough><IsUnderLine>false</IsUnderLine><Opacity>100</Opacity></Caption></Captions></CaptionData>"
 
@@ -61,6 +58,31 @@ class TweetsController < ApplicationController
   end
   
   def create
+    
+    @loltweet = params[:lol_tweet]
+    @imageurl = params[:original_image_url] # this should be set to the url resulting from pushing content to cb api
+    @pictureId = params[:picture_id] # this is the picture ID to send to cheeseburger
+    
+    xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?><CaptionedLol><FullText>#{@loltweet}</FullText><PictureId>#{@pictureId}</PictureId><Title>Tweet Burger</Title><Description></Description><EmailAddress></EmailAddress><Name></Name><CaptionData><OriginalImageUrl>#{@imageurl}</OriginalImageUrl><Captions><Caption><Text>#{@loltweet}</Text><FontFamily>Impact</FontFamily><FontSize>30</FontSize><FontColor>White</FontColor><XPosition>10</XPosition><YPosition>20</YPosition><IsBold>false</IsBold><TextStyle>outline</TextStyle><IsItalic>false</IsItalic><IsStrikeThrough>false</IsStrikeThrough><IsUnderLine>false</IsUnderLine><Opacity>100</Opacity></Caption></Captions></CaptionData></CaptionedLol>"
+
+    #post the lol caption to cheeseburger and hopefully get an image back
+    url = URI.parse('http://api.cheezburger.com/xml/lol')
+    request = Net::HTTP::Post.new(url.path)
+    request.body = xml
+    request["DeveloperKey"] = APP_CONFIG["cheezburger_key"]
+    request["ClientID"] = APP_CONFIG["cheezburger_clientid"]
+    request.content_type = 'text/xml'
+    response = Net::HTTP.start(url.host, url.port) {|http| http.request(request)}
+    doc = Hpricot::XML(response.body)
+ 
+    # if we want to use bitly
+    uri = URI.parse("http://api.bit.ly/v3/shorten?login=#{APP_CONFIG["bitly_username"]}&apikey=#{APP_CONFIG["bitly_token"]}&longUrl=#{(doc/:LolImageUrl).innerHTML}&format=txt")
+    response = Net::HTTP.get_response(uri)
+    bitlyImage = response.body.strip
+    
+    #post to twitter
+    twitter_text = "#{@loltweet} : #{bitlyImage} #tweetburger"
+    twitter_client.update(twitter_text)
     
   end
 

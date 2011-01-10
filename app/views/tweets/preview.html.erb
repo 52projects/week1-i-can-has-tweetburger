@@ -8,7 +8,11 @@
 			<%= text_area_tag 'tweet', @loltweet + " : " + @imageurl + " #tweetburger", {:rows => 4, :class => "small_text"} %>
 		</p>
 		
-			
+		<%= form_tag tweet_path do %>
+		<%=hidden_field_tag 'picture_id', @pictureId %>	
+		<%= hidden_field_tag 'lol_tweet', @loltweet %>
+		<%=hidden_field_tag 'original_image_url', @imageurl %>
 		<p><%= submit_tag "i can haz tweet burger!" %></p>
+		<% end %>
 	</div>
 </div>
