@@ -24,13 +24,13 @@ class TweetsController < ApplicationController
     
     @loltweet = params[:tweet].to_lolspeak
     @imageurl = params[:original_image_url] # this should be set to the url resulting from pushing content to cb api
-    
+
     # if we want to use bitly
     # uri = URI.parse("http://api.bit.ly/v3/shorten?login=&apikey=&longUrl=#{params[:original_image_url]}%2F&format=txt")
     #    response = Net::HTTP.get_response(uri)
     #    @imageurl = response.body.strip
     
-    xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?><CaptionData><OriginalImageUrl>#{params[:original_image_url]}</OriginalImageUrl><Captions><Caption><Text>#{@loltweet}</Text><FontFamily>Impact</FontFamily><FontSize>40</FontSize><FontColor>white</FontColor><XPosition>80</XPosition><YPosition>50</YPosition><IsBold>false</IsBold><TextStyle>outline</TextStyle><IsItalic>false</IsItalic><IsStrikeThrough>false</IsStrikeThrough><IsUnderLine>false</IsUnderLine><Opacity>100</Opacity></Caption></Captions></CaptionData>"
+    xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?><CaptionData><OriginalImageUrl>#{params[:original_image_url]}</OriginalImageUrl><Captions><Caption><Text>#{parse_tweet_text(@loltweet)}</Text><FontFamily>Impact</FontFamily><FontSize>40</FontSize><FontColor>white</FontColor><XPosition>80</XPosition><YPosition>50</YPosition><IsBold>false</IsBold><TextStyle>outline</TextStyle><IsItalic>false</IsItalic><IsStrikeThrough>false</IsStrikeThrough><IsUnderLine>false</IsUnderLine><Opacity>100</Opacity></Caption></Captions></CaptionData>"
 
     #POST to: http://cheezburger.com/caption/previewcaption.ashx
     
@@ -60,4 +60,29 @@ class TweetsController < ApplicationController
     @previewimage = "http://cheezburger.com/caption/previewcaption.ashx?" + CGI.escape(xml)
     
   end
+
+  private
+  def parse_tweet_text(tweet_text)
+    
+    # split the text into an array by the spacebar to see if there are more than 4 words
+    tweet_text_array = tweet_text.split(' ')
+    return_text = ''  # the return text
+    wrap_count = 0 # local variable for count
+      
+    # loop through the text array
+    tweet_text_array.each do |text|
+        
+      return_text = "#{return_text} #{text}"
+
+      # if the wrap count is 3 then we are going to break here        
+      if wrap_count == 3
+        return_text = "#{return_text}\r\n" 
+        wrap_count = 0
+      end
+        
+      wrap_count = wrap_count + 1
+    end
+    return return_text
+  end
+
 end
