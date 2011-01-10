@@ -1,5 +1,9 @@
 Icanhastweetburger::Application.routes.draw do
 
+  get "/login" => 'user_session#login'
+
+  get "/callback" => 'user_session#callback'
+
   resource :tweet
 
   root :to => "tweets#show"
