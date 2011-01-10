@@ -1,0 +1,15 @@
+development:
+    bitly_username: ""
+    bitly_token: ""
+    cheezburger_key: ""
+    cheezburger_clientid: ""
+    twitter_consumer_key: ""
+    twitter_consumer_secret: ""
+    
+production:
+    bitly_username: ""
+    bitly_token: ""
+    cheezburger_key: ""
+    cheezburger_clientid: ""
+    twitter_consumer_key: ""
+    twitter_consumer_secret: ""
