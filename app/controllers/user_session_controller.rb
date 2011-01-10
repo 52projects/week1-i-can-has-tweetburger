@@ -1,6 +1,10 @@
 class UserSessionController < ApplicationController
   skip_before_filter :check_auth
   
+  def index
+    
+  end
+  
   def login
     if cookies[:tkeys]
       u = UserSession.find_by_identifier(cookies[:tkeys])
