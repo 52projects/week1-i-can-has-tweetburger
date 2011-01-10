@@ -1,5 +1,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
+  
+  before_filter :check_auth
+  
   CONSUMER_KEY = APP_CONFIG['twitter_consumer_key']
   CONSUMER_SECRET = APP_CONFIG['twitter_consumer_secret']
   attr_writer :twitter_client
@@ -15,4 +18,13 @@ class ApplicationController < ActionController::Base
     end
     @twitter_client
   end
+  
+  private
+  
+  def check_auth
+    if not twitter_client.authorized?
+      redirect_to login_path
+    end
+  end
+  
 end

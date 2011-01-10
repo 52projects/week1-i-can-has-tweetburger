@@ -1,6 +1,7 @@
 Icanhastweetburger::Application.routes.draw do
 
   get "/login" => 'user_session#login'
+  get "/logoff" => 'user_session#logoff'
 
   get "/callback" => 'user_session#callback'
 
