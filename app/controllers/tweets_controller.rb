@@ -59,7 +59,7 @@ class TweetsController < ApplicationController
   
   def create
     
-    @loltweet = params[:lol_tweet]
+    @loltweet = parse_tweet_text(params[:lol_tweet])
     @imageurl = params[:original_image_url] # this should be set to the url resulting from pushing content to cb api
     @pictureId = params[:picture_id] # this is the picture ID to send to cheeseburger
     
