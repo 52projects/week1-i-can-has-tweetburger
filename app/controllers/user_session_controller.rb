@@ -8,16 +8,19 @@ class UserSessionController < ApplicationController
   end
 
   def callback
-    self.twitter_client = twitter_client.authorize(session[:twitter_request_token], session[:twitter_request_secret], :oauth_verifier => params[:oauth_verifier])
+    access_token = twitter_client.authorize(session[:twitter_request_token], session[:twitter_request_secret], :oauth_verifier => params[:oauth_verifier])
+    if not access_token.nil?
+      session[:twitter_access_token] = access_token.token
+      session[:twitter_access_secret] = access_token.secret
+    end
+    @twitter_client = nil
     if twitter_client.authorized?
       session[:twitter_request_token] = nil
       session[:twitter_request_secret] = nil
-      session[:twitter_access_token] = @twitter_client.token
-      session[:twitter_access_secret] = @twitter_client.secret
+      
       redirect_to '/tweet'
     else
-      flash[:error] = "Invalid username or password"
-      #redirect_to '/login'
+      redirect_to '/login'
     end
   end
 
