@@ -31,3 +31,9 @@ fieldset {
 fieldset legend {
 	font-size: 30px;
 }
+
+.error_box {
+	border: 2px solid #e33;
+	background-color: #e66;
+	padding: 5px;
+}

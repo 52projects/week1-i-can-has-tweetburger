@@ -3,6 +3,7 @@ require 'hpricot'
 
 class TweetsController < ApplicationController
   def show
+    flash[:error] = nil
     response = Net::HTTP.get_response(URI.parse("http://api.cheezburger.com/xml/category/cats/lol/random"))
     doc = Hpricot::XML(response.body)
     @catimage = (doc/:PictureImageUrl).innerHTML
@@ -15,8 +16,10 @@ class TweetsController < ApplicationController
   end
   
   def preview
-    
-    @loltweet = params[:tweet].to_lolspeak
+    if params[:tweet].to_lolspeak.length > 125
+      flash[:error] = "Your tweet was too long and has to be truncated"
+    end
+    @loltweet = params[:tweet].to_lolspeak[0..124]
     @imageurl = params[:original_image_url] # this should be set to the url resulting from pushing content to cb api
     @pictureId = params[:picture_id] # this is the picture ID to send to cheeseburger
     
