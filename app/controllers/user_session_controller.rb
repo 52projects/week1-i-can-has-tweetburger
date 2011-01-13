@@ -6,7 +6,7 @@ class UserSessionController < ApplicationController
   end
   
   def login
-    if cookies[:tkeys]
+    if !cookies[:tkeys].nil?
       u = UserSession.find_by_identifier(cookies[:tkeys])
       session[:twitter_access_token] = u.access_token
       session[:twitter_access_secret] = u.access_secret
