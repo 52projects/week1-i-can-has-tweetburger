@@ -20,4 +20,6 @@ ActiveRecord::Schema.define(:version => 20110110001022) do
     t.datetime "updated_at"
   end
 
+  add_index "user_sessions", ["identifier"], :name => "index_user_sessions_on_identifier"
+
 end

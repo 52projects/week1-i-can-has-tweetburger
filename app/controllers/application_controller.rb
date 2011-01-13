@@ -8,9 +8,15 @@ class ApplicationController < ActionController::Base
   attr_writer :twitter_client
   
   def twitter_client
+    if cookies[:tkeys]
+      u = UserSession.find_by_identifier(cookies[:tkeys])
+      session[:twitter_access_token] = u.access_token
+      session[:twitter_access_secret] = u.access_secret
+    end
+    
     if @twitter_client.nil? and session[:twitter_access_token].nil?
       @twitter_client = TwitterOAuth::Client.new(:consumer_key => CONSUMER_KEY, :consumer_secret => CONSUMER_SECRET)
-    else
+    else session[:twitter_access_token]
       @twitter_client = TwitterOAuth::Client.new(:consumer_key => CONSUMER_KEY, 
                                                  :consumer_secret => CONSUMER_SECRET,
                                                  :token => session[:twitter_access_token],
